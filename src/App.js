@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import AirlineSelection from './components/AirlineSelection';
 import FlightSelection from './components/FlightSelection';
 import PassengerList from './components/PassengerList';
-import * as XLSX from 'xlsx'; // Importing XLSX library
-import './App.css'; // Styling
+import * as XLSX from 'xlsx';
+import './App.css';
 
 const App = () => {
   const [selectedAirline, setSelectedAirline] = useState(null);
@@ -17,21 +17,21 @@ const App = () => {
   });
 
   const [passengers, setPassengers] = useState([]);
-  const [filteredPassengers, setFilteredPassengers] = useState([]); // Store filtered passengers
-  const [airlineSearchTerm, setAirlineSearchTerm] = useState(""); // Search term for airline filtering
+  const [filteredPassengers, setFilteredPassengers] = useState([]);
+  const [airlineSearchTerm, setAirlineSearchTerm] = useState('');
 
+  // Fetch the Excel file only once
   useEffect(() => {
-    fetchExcelFile();
-  }, []);
+    if (passengers.length === 0) {
+      fetchExcelFile();
+    }
+  }, [passengers]);
 
   const fetchExcelFile = async () => {
     try {
       console.log("Fetching Excel file...");
-
-      const response = await fetch('/sample_passenger_data1.xlsx'); // Update path if necessary
-      if (!response.ok) {
-        throw new Error(`Failed to fetch Excel file: ${response.statusText}`);
-      }
+      const response = await fetch('/sample_passenger_data1.xlsx'); // Ensure correct path to the file
+      if (!response.ok) throw new Error(`Failed to fetch Excel file: ${response.statusText}`);
 
       const data = await response.arrayBuffer();
       const workbook = XLSX.read(data, { type: 'array' });
@@ -52,53 +52,46 @@ const App = () => {
   };
 
   const handleFlightSelection = (flight) => {
-    setSelectedFlight(flight);
     console.log('Selected flight:', flight);
 
+    const normalizedFlight = normalizeFlightNumber(flight);
+    if (!normalizedFlight) return; // Exit early if invalid flight number
+
+    setSelectedFlight(normalizedFlight);
+    console.log(`Selected flight normalized: ${normalizedFlight}`);
+
     if (passengers.length > 0) {
-      filterPassengers(flight);
+      filterPassengers(normalizedFlight);
     } else {
       console.log("Data is still loading, cannot filter passengers yet.");
     }
   };
 
+  // Normalize flight number (remove spaces and make uppercase)
   const normalizeFlightNumber = (flightNumber) => {
-    if (flightNumber && flightNumber.trim) {
-      const normalized = flightNumber.trim().replace(/\s+/g, '').toUpperCase();
-      console.log(`Normalized flight number: '${normalized}'`);
-      return normalized;
-    }
-    return '';
+    const normalized = flightNumber?.trim().replace(/\s+/g, '').toUpperCase();
+    console.log(`Normalized flight number: '${normalized}'`);
+    return normalized;
   };
-  
+
   const filterPassengers = (flight) => {
-    console.log("Passenger flight numbers:");
-    passengers.forEach((passenger) => {
-      console.log(`Flight Number: '${passenger['Flight Number']}'`); // Log individual flight numbers
-    });
-  
-    const selectedFlightNormalized = normalizeFlightNumber(selectedFlight);
-    console.log(`Selected flight normalized: '${selectedFlightNormalized}'`);
-  
+    console.log("Filtering passengers...");
+
+    const selectedFlightNormalized = normalizeFlightNumber(flight);
     if (!selectedFlightNormalized) {
       console.error('Selected flight is empty or invalid.');
-      return; // Exit early if the selected flight is invalid
+      return;
     }
-  
+
     const filtered = passengers.filter((passenger) => {
-      const flightNumber = normalizeFlightNumber(passenger['Flight Number']); // Normalize the flight number
-      console.log(`Comparing: '${flightNumber}' with '${selectedFlightNormalized}'`);
-  
-      // Check if the flight number matches the selected flight
-      const isMatch = flightNumber === selectedFlightNormalized;
-      console.log(`Match result: ${isMatch}`);
-      return isMatch;
+      const flightNumber = normalizeFlightNumber(passenger['Flight Number']);
+      return flightNumber === selectedFlightNormalized;
     });
-  
+
     console.log('Filtered passengers:', filtered);
     setFilteredPassengers(filtered);
   };
-  
+
   const handleSearchChange = (event) => {
     setAirlineSearchTerm(event.target.value);
   };
@@ -137,7 +130,7 @@ const App = () => {
           {selectedFlight && (
             <div className="passenger-list-container" style={{ maxHeight: '400px', overflowY: 'auto' }}>
               {filteredPassengers.length > 0 ? (
-                <PassengerList passengers={filteredPassengers} /> // Now handles boarding status internally
+                <PassengerList passengers={filteredPassengers} />
               ) : (
                 <p>No passengers found for this flight.</p>
               )}
