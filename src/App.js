@@ -9,11 +9,15 @@ const App = () => {
   const [selectedAirline, setSelectedAirline] = useState(null);
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [flights, setFlights] = useState({
-    "Delta Airlines": ["DL 100", "DL 200", "DL 300", "DL 400", "DL 500"],
-    "Korean Airlines": ["KE 500", "KE 600", "KE 700", "KE 800", "KE 900"],
-    "American Airlines": ["AA 800", "AA 900", "AA 1000", "AA 1100", "AA 1200"],
-    "United Airlines": ["UA 100", "UA 200", "UA 300", "UA 400", "UA 500"],
-    // Add other airlines...
+    "Delta Airlines": ["DL 100", "DL 200", "DL 300", "DL 400", "DL 500", "DL 600", "DL 700", "DL 800"], // More flights added
+    "Korean Airlines": ["KE 500", "KE 600", "KE 700", "KE 800", "KE 900", "KE 1000", "KE 1100", "KE 1200"], // More flights added
+    "American Airlines": ["AA 800", "AA 900", "AA 1000", "AA 1100", "AA 1200", "AA 1300", "AA 1400", "AA 1500"], // More flights added
+    "United Airlines": ["UA 100", "UA 200", "UA 300", "UA 400", "UA 500", "UA 600", "UA 700", "UA 800"], // More flights added
+    "British Airways": ["BA 100", "BA 200", "BA 300", "BA 400", "BA 500", "BA 600", "BA 700", "BA 800"], // More flights added
+    "Lufthansa": ["LH 100", "LH 200", "LH 300", "LH 400", "LH 500", "LH 600", "LH 700", "LH 800"], // More flights added
+    "Air France": ["AF 100", "AF 200", "AF 300", "AF 400", "AF 500", "AF 600", "AF 700", "AF 800"], // More flights added
+    "Emirates": ["EK 100", "EK 200", "EK 300", "EK 400", "EK 500", "EK 600", "EK 700", "EK 800"], // More flights added
+    // Add more airlines with flights as needed...
   });
 
   const [passengers, setPassengers] = useState([]);

@@ -130,6 +130,12 @@ input[type="file"] {
   padding-right: 10px; /* Optional, to prevent scrollbar overlap */
 }
 
+.airline-selection-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
 .passenger-list-container {
   max-height: 350px;
   overflow-y: auto;
