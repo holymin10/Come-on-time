@@ -9,20 +9,19 @@ const App = () => {
   const [selectedAirline, setSelectedAirline] = useState(null);
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [flights, setFlights] = useState({
-    "Delta Airlines": ["DL 100", "DL 200", "DL 300", "DL 400", "DL 500", "DL 600", "DL 700", "DL 800"], // More flights added
-    "Korean Airlines": ["KE 500", "KE 600", "KE 700", "KE 800", "KE 900", "KE 1000", "KE 1100", "KE 1200"], // More flights added
-    "American Airlines": ["AA 800", "AA 900", "AA 1000", "AA 1100", "AA 1200", "AA 1300", "AA 1400", "AA 1500"], // More flights added
-    "United Airlines": ["UA 100", "UA 200", "UA 300", "UA 400", "UA 500", "UA 600", "UA 700", "UA 800"], // More flights added
-    "British Airways": ["BA 100", "BA 200", "BA 300", "BA 400", "BA 500", "BA 600", "BA 700", "BA 800"], // More flights added
-    "Lufthansa": ["LH 100", "LH 200", "LH 300", "LH 400", "LH 500", "LH 600", "LH 700", "LH 800"], // More flights added
-    "Air France": ["AF 100", "AF 200", "AF 300", "AF 400", "AF 500", "AF 600", "AF 700", "AF 800"], // More flights added
-    "Emirates": ["EK 100", "EK 200", "EK 300", "EK 400", "EK 500", "EK 600", "EK 700", "EK 800"], // More flights added
-    // Add more airlines with flights as needed...
+    "Delta Airlines": ["DL 100", "DL 200", "DL 300", "DL 400", "DL 500", "DL 600", "DL 700", "DL 800"],
+    "Korean Airlines": ["KE 500", "KE 600", "KE 700", "KE 800", "KE 900", "KE 1000", "KE 1100", "KE 1200"],
+    "American Airlines": ["AA 800", "AA 900", "AA 1000", "AA 1100", "AA 1200", "AA 1300", "AA 1400", "AA 1500"],
+    "United Airlines": ["UA 100", "UA 200", "UA 300", "UA 400", "UA 500", "UA 600", "UA 700", "UA 800"],
+    "British Airways": ["BA 100", "BA 200", "BA 300", "BA 400", "BA 500", "BA 600", "BA 700", "BA 800"],
+    "Lufthansa": ["LH 100", "LH 200", "LH 300", "LH 400", "LH 500", "LH 600", "LH 700", "LH 800"],
+    "Air France": ["AF 100", "AF 200", "AF 300", "AF 400", "AF 500", "AF 600", "AF 700", "AF 800"],
+    "Emirates": ["EK 100", "EK 200", "EK 300", "EK 400", "EK 500", "EK 600", "EK 700", "EK 800"],
   });
 
   const [passengers, setPassengers] = useState([]);
-  const [filteredPassengers, setFilteredPassengers] = useState([]); // Store filtered passengers
-  const [airlineSearchTerm, setAirlineSearchTerm] = useState(""); // Search term for airline filtering
+  const [filteredPassengers, setFilteredPassengers] = useState([]);
+  const [airlineSearchTerm, setAirlineSearchTerm] = useState("");
 
   useEffect(() => {
     fetchExcelFile();
@@ -32,7 +31,7 @@ const App = () => {
     try {
       console.log("Fetching Excel file...");
 
-      const response = await fetch('/sample_passenger_data1.xlsx'); // Update path if necessary
+      const response = await fetch('/sample_passenger_data1.xlsx');
       if (!response.ok) {
         throw new Error(`Failed to fetch Excel file: ${response.statusText}`);
       }
@@ -132,9 +131,16 @@ const App = () => {
           {selectedFlight && (
             <div className="passenger-list-container">
               {filteredPassengers.length > 0 ? (
-                <PassengerList passengers={filteredPassengers} />
+                <>
+                  <PassengerList 
+                    passengers={filteredPassengers} 
+                    onBackClick={() => setSelectedAirline(null)} 
+                  />
+                </>
               ) : (
-                <p>No passengers found for this flight.</p>
+                <div className="no-passengers-message">
+                  <p>No passengers found for this flight.</p>
+                </div>
               )}
             </div>
           )}
