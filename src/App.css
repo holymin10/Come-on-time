@@ -1,0 +1,180 @@
+/* App.css */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #6a4df7;
+  padding: 20px;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  font-size: 18px;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #5346d9;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+li:hover {
+  background-color: #4a40b9;
+}
+
+.file-input {
+  margin-top: 20px;
+  background-color: #5346d9;
+  border: none;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.file-input:hover {
+  background-color: #4a40b9;
+}
+
+.flight-selection-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #6a4df7;
+  padding: 20px;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.passenger-list-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #6a4df7;
+  padding: 20px;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input[type="file"] {
+  display: block;
+  margin-top: 20px;
+}
+
+.passenger-list-container {
+  margin-top: 20px;
+}
+
+.back-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.airline-search-bar {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.airline-selection-container {
+  width: 100%;
+  max-height: 400px; /* Adjust based on your design */
+  overflow-y: scroll; /* Enables scrolling if the list exceeds max-height */
+  padding-right: 10px; /* Optional, to prevent scrollbar overlap */
+}
+
+.passenger-list-container {
+  margin-top: 20px;
+}
+
+.back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.passenger-list {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.passenger-list table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left; /* Align text left for all columns */
+}
+
+.passenger-list th, .passenger-list td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.passenger-list th {
+  background-color: #f4f4f4;
+}
+
+.passenger-list td.boarding-status {
+  text-align: center; /* Centers the boarding status icons */
+}
+
+.passenger-list td {
+  font-size: 16px;
+  max-width: 200px; /* Set max width to avoid overflow */
+  word-wrap: break-word; /* Ensures long text wraps */
+}
+
+
+.passenger-list td, .passenger-list th {
+  padding-left: 15px;
+  padding-right: 15px;
+}
