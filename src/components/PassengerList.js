@@ -64,6 +64,7 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
             <th>Name</th>
             <th>Nationality</th>
             <th>Flight</th>
+            <th>Gate</th>
             <th>Status</th>
             <th>Action</th>
             <th>Update</th>
@@ -75,6 +76,7 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
               <td>{passenger['Full Name']}</td>
               <td>{passenger['Nationality']}</td>
               <td>{passenger['Flight Number'] || selectedFlight}</td>
+              <td>{passenger['Gate Number'] || 'N/A'}</td>
               <td>
                 {boardingStatuses[index] === 'On' ? (
                   <span className="status-on">✓</span>
