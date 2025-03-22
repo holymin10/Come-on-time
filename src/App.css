@@ -7,12 +7,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .app-container {
-  width: 100%;
-  max-width: 500px;
+  width: 120%;
+  max-width: 1200px;
   background-color: #6a4df7;
   padding: 20px;
   border-radius: 20px;
@@ -22,10 +22,15 @@ body {
   align-items: center;
 }
 
-h2 {
+h2, h3 {
   font-size: 24px;
   margin-bottom: 20px;
   font-weight: bold;
+}
+
+h3 {
+  font-size: 20px;
+  text-align: center;
 }
 
 ul {
@@ -62,7 +67,8 @@ li:hover {
   background-color: #4a40b9;
 }
 
-.flight-selection-container {
+.airline-selection-container {
+  position: relative;
   width: 100%;
   max-width: 400px;
   background-color: #6a4df7;
@@ -74,16 +80,48 @@ li:hover {
   align-items: center;
 }
 
-.passenger-list-container {
+/* New split layout styles */
+.split-layout-container {
+  position: relative;
   width: 100%;
-  max-width: 500px;
   background-color: #6a4df7;
   padding: 20px;
+  padding-top: 60px;
   border-radius: 20px;
   color: white;
+}
+
+.split-layout {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.flight-selection-panel {
+  flex: 0 0 300px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.passenger-data-panel {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 15px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.passenger-list {
+  width: 100%;
+}
+
+.flight-info-header {
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 input[type="file"] {
@@ -91,22 +129,17 @@ input[type="file"] {
   margin-top: 20px;
 }
 
-/*.passenger-list-container {
-  margin-top: 20px;
-}*/
-
 .back-button {
   position: absolute;
   top: 20px;
+  left: 20px;
   z-index: 10;
   background-color: #5346d9;
   color: white;
   border: none;
   padding: 10px 15px;
-  margin-bottom: 15px;
   border-radius: 4px;
   cursor: pointer;
-  display: block;
   width: fit-content;
 }
 
@@ -118,16 +151,16 @@ input[type="file"] {
   padding: 10px;
   font-size: 16px;
   margin-bottom: 20px;
-  width: 100%;
+  width: 80%;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
 
 .airline-selection-container {
   width: 100%;
-  max-height: 400px; /* Adjust based on your design */
-  overflow-y: scroll; /* Enables scrolling if the list exceeds max-height */
-  padding-right: 10px; /* Optional, to prevent scrollbar overlap */
+  max-height: 400px;
+  overflow-y: scroll;
+  padding-right: 10px;
 }
 
 .airline-selection-container h2 {
@@ -136,93 +169,150 @@ input[type="file"] {
   text-align: center;
 }
 
-.passenger-list-container {
-  max-height: 350px;
-  overflow-y: auto;
+.no-passengers-message {
+  background-color: white;
+  color: #333;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
   margin-top: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  font-weight: bold;
 }
 
-.passenger-list {
-  width: 100%;
-  margin-top: 20px;
-}
-
+/* Table styles */
 .passenger-list table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left; /* Align text left for all columns */
+  text-align: left;
 }
 
-.passenger-list th, .passenger-list td {
-  padding: 10px;
-  border: 1px solid #ddd;
-}
-
-.passenger-list th {
-  background-color: #f4f4f4;
-}
-
-.passenger-list td.boarding-status {
-  text-align: center; /* Centers the boarding status icons */
-}
-
-.passenger-list td {
-  font-size: 16px;
-  max-width: 200px; /* Set max width to avoid overflow */
-  word-wrap: break-word; /* Ensures long text wraps */
-}
-
-
-.passenger-list td, .passenger-list th {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-/* Passenger Table Styling */
 .passenger-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   background-color: white;
-  color: black;
+  color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
+  margin-top: 10px;
 }
 
 .passenger-table th,
 .passenger-table td {
-  padding: 10px;
-  border: 1px solid #333;
+  padding: 12px 8px;
+  border: none;
   text-align: left;
+  font-size: 14px;
+  word-break: break-word;
 }
 
 .passenger-table th {
-  background-color: white;
+  background-color: #f0f2f5;
+  font-weight: bold;
+  color: #555;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.passenger-table tr:nth-child(even) {
+  background-color: #f9fafc;
+}
+
+.passenger-table tr:hover {
+  background-color: #f0f4ff;
+}
+
+.passenger-table th:nth-child(1),
+.passenger-table td:nth-child(1) {
+  width: 20%;
+}
+
+.passenger-table th:nth-child(2),
+.passenger-table td:nth-child(2) {
+  width: 15%;
+}
+
+.passenger-table th:nth-child(3),
+.passenger-table td:nth-child(3) {
+  width: 15%;
+}
+
+.passenger-table th:nth-child(4),
+.passenger-table td:nth-child(4) {
+  width: 15%;
+  text-align: center;
+}
+
+.passenger-table th:nth-child(5),
+.passenger-table td:nth-child(5),
+.passenger-table th:nth-child(6),
+.passenger-table td:nth-child(6) {
+  width: 15%;
+  text-align: center;
+}
+
+.status-on {
+  color: #10b981;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.status-off {
+  color: #ef4444;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .announce-btn {
-  background-color: #14d541;
-  color: black;
+  background-color: #10b981;
+  color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .announce-btn:hover {
-  background-color: #14d541;
+  background-color: #059669;
 }
 
 .cancel-btn {
-  background-color: #f44336;
+  background-color: #ef4444;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 10px;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .cancel-btn:hover {
-  background-color: #d32f2f;
+  background-color: #dc2626;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .split-layout {
+    flex-direction: column;
+  }
+  
+  .flight-selection-panel {
+    flex: none;
+    width: 100%;
+  }
+  
+  .passenger-data-panel {
+    margin-top: 20px;
+  }
+  
+  .app-container {
+    max-width: 95%;
+    padding: 10px;
+  }
 }

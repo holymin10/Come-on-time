@@ -117,33 +117,37 @@ const App = () => {
           />
         </div>
       ) : (
-        <div className="flight-selection-container">
+        <div className="split-layout-container">
           <button className="back-button" onClick={() => setSelectedAirline(null)}>
             Back to Airlines
           </button>
-  
-          <FlightSelection
-            flights={flights[selectedAirline]}
-            onSelectFlight={handleFlightSelection}
-            selectedFlight={selectedFlight}
-          />
           
-          {selectedFlight && (
-            <div className="passenger-list-container">
-              {filteredPassengers.length > 0 ? (
-                <>
+          <div className="split-layout">
+            <div className="flight-selection-panel">
+              <h3>Select a Flight</h3>
+              <FlightSelection
+                flights={flights[selectedAirline]}
+                onSelectFlight={handleFlightSelection}
+                selectedFlight={selectedFlight}
+              />
+            </div>
+            
+            {selectedFlight && (
+              <div className="passenger-data-panel">
+                {filteredPassengers.length > 0 ? (
                   <PassengerList 
                     passengers={filteredPassengers} 
-                    onBackClick={() => setSelectedAirline(null)} 
+                    onBackClick={() => setSelectedAirline(null)}
+                    selectedFlight={selectedFlight}
                   />
-                </>
-              ) : (
-                <div className="no-passengers-message">
-                  <p>No passengers found for this flight.</p>
-                </div>
-              )}
-            </div>
-          )}
+                ) : (
+                  <div className="no-passengers-message">
+                    <p>No passengers found for this flight.</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

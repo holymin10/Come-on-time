@@ -5,9 +5,48 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
   const [boardingStatuses, setBoardingStatuses] = useState(
     passengers.map(passenger => passenger['Boarding Status'])
   );
+  
+  // Loading state for announce button
+  const [announcingPassenger, setAnnouncingPassenger] = useState(null);
 
-  // Handle cancellation (changing boarding status from Off to On)
-  const handleCancellation = (index) => {
+  // Handle announce (play audio message)
+  const handleAnnounce = async (fullName, passenger) => {
+    try {
+      setAnnouncingPassenger(fullName);
+      
+      // Determine language and message based on nationality
+      let message;
+      let lang;
+      
+      if (passenger['Nationality'] === "China") {
+        message = `${fullName}, 飞机即将起飞。请尽快办理登机手续。`;
+        lang = 'zh-CN';
+      } else if (passenger['Nationality'] === "Mexico") {
+        message = `${fullName}, el avión saldrá pronto. Por favor, apresúrese a realizar el check-in.`;
+        lang = 'es-ES';
+      } else {
+        message = `${fullName}, the plane is about to depart. Please hurry to check in.`;
+        lang = 'en-US';
+      }
+      
+      // Create speech synthesis utterance
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.lang = lang;
+      
+      // Play the announcement
+      utterance.onend = () => {
+        setAnnouncingPassenger(null);
+      };
+      
+      window.speechSynthesis.speak(utterance);
+    } catch (error) {
+      console.error(`Error announcing for ${fullName}:`, error);
+      setAnnouncingPassenger(null);
+    }
+  };
+
+  // Handle update (changing boarding status from Off to On)
+  const handleUpdate = (index) => {
     const newBoardingStatuses = [...boardingStatuses];
     newBoardingStatuses[index] = 'On';
     setBoardingStatuses(newBoardingStatuses);
@@ -15,11 +54,6 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
 
   return (
     <div className="passenger-list">
-      <button className="back-button passenger-list-back" onClick={onBackClick}>
-        Back to Airlines
-      </button>
-      
-      {/* Flight information display */}
       <div className="flight-info-header">
         <h3>Flight: {selectedFlight}</h3>
       </div>
@@ -30,9 +64,9 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
             <th>Name</th>
             <th>Nationality</th>
             <th>Flight</th>
-            <th>Boarding Status</th>
+            <th>Status</th>
             <th>Action</th>
-            <th>Cancel</th>
+            <th>Update</th>
           </tr>
         </thead>
         <tbody>
@@ -43,23 +77,29 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
               <td>{passenger['Flight Number'] || selectedFlight}</td>
               <td>
                 {boardingStatuses[index] === 'On' ? (
-                  <span style={{ color: 'green' }}>✓</span>
+                  <span className="status-on">✓</span>
                 ) : (
-                  <span style={{ color: 'red' }}>✗</span>
+                  <span className="status-off">✗</span>
                 )}
               </td>
               <td>
                 {boardingStatuses[index] !== 'On' && (
-                  <button className="announce-btn">Announce</button>
+                  <button 
+                    className="announce-btn"
+                    onClick={() => handleAnnounce(passenger['Full Name'], passenger)}
+                    disabled={announcingPassenger === passenger['Full Name']}
+                  >
+                    {announcingPassenger === passenger['Full Name'] ? 'Announcing...' : 'Announce'}
+                  </button>
                 )}
               </td>
               <td>
                 {boardingStatuses[index] !== 'On' && (
                   <button 
                     className="cancel-btn" 
-                    onClick={() => handleCancellation(index)}
+                    onClick={() => handleUpdate(index)}
                   >
-                    Cancel
+                    Arrived
                   </button>
                 )}
               </td>
