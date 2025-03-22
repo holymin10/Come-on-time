@@ -19,10 +19,10 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
       let lang;
       
       if (passenger['Nationality'] === "China") {
-        message = `请注意 这是乘客 ${fullName} 的最后一次登机通知，飞机即将起飞。请立即前往登机口。`;
+        message = `请注意 这是乘客 ${fullName} 的最后一次登机通知，飞机即将起飞。请立即前往登机口${gateNum}。`;
         lang = 'zh-CN';
       } else if (passenger['Nationality'] === "Mexico") {
-        message = `Atención, por favor. Esta es la última llamada de embarque para el pasajero ${fullName}, el avión está a punto de partir. Por favor, diríjase inmediatamente a la puerta de embarque.`;
+        message = `Atención, por favor. Esta es la última llamada de embarque para el pasajero ${fullName}, el avión está a punto de despegar. Por favor, diríjase inmediatamente a la puerta ${gateNum}.`;
         lang = 'es-ES';
       } else {
         message = `Attention please. This is the final boarding call for passenger ${fullName}, the plane is about to depart. Please proceed immediately to gate ${gateNum}.`;
