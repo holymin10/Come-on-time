@@ -10,7 +10,7 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
   const [announcingPassenger, setAnnouncingPassenger] = useState(null);
 
   // Handle announce (play audio message)
-  const handleAnnounce = async (fullName, passenger) => {
+  const handleAnnounce = async (fullName, passenger, gateNum) => {
     try {
       setAnnouncingPassenger(fullName);
       
@@ -19,13 +19,13 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
       let lang;
       
       if (passenger['Nationality'] === "China") {
-        message = `${fullName}, 飞机即将起飞。请尽快办理登机手续。`;
+        message = `请注意 这是乘客 ${fullName} 的最后一次登机通知，飞机即将起飞。请立即前往登机口。`;
         lang = 'zh-CN';
       } else if (passenger['Nationality'] === "Mexico") {
-        message = `${fullName}, el avión saldrá pronto. Por favor, apresúrese a realizar el check-in.`;
+        message = `Atención, por favor. Esta es la última llamada de embarque para el pasajero ${fullName}, el avión está a punto de partir. Por favor, diríjase inmediatamente a la puerta de embarque.`;
         lang = 'es-ES';
       } else {
-        message = `${fullName}, the plane is about to depart. Please hurry to check in.`;
+        message = `Attention please. This is the final boarding call for passenger ${fullName}, the plane is about to depart. Please proceed immediately to gate ${gateNum}.`;
         lang = 'en-US';
       }
       
@@ -86,7 +86,7 @@ const PassengerList = ({ passengers, onBackClick, selectedFlight }) => {
                 {boardingStatuses[index] !== 'On' && (
                   <button 
                     className="announce-btn"
-                    onClick={() => handleAnnounce(passenger['Full Name'], passenger)}
+                    onClick={() => handleAnnounce(passenger['Full Name'], passenger, passenger['Gate Number'])}
                     disabled={announcingPassenger === passenger['Full Name']}
                   >
                     {announcingPassenger === passenger['Full Name'] ? 'Announcing...' : 'Announce'}
