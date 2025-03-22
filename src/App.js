@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import AirlineSelection from './components/AirlineSelection';
 import FlightSelection from './components/FlightSelection';
 import PassengerList from './components/PassengerList';
-import * as XLSX from 'xlsx';
-import './App.css';
+import * as XLSX from 'xlsx'; // Importing XLSX library
+import './App.css'; // Styling
 
 const App = () => {
   const [selectedAirline, setSelectedAirline] = useState(null);
@@ -17,21 +17,21 @@ const App = () => {
   });
 
   const [passengers, setPassengers] = useState([]);
-  const [filteredPassengers, setFilteredPassengers] = useState([]);
-  const [airlineSearchTerm, setAirlineSearchTerm] = useState('');
+  const [filteredPassengers, setFilteredPassengers] = useState([]); // Store filtered passengers
+  const [airlineSearchTerm, setAirlineSearchTerm] = useState(""); // Search term for airline filtering
 
-  // Fetch the Excel file only once
   useEffect(() => {
-    if (passengers.length === 0) {
-      fetchExcelFile();
-    }
-  }, [passengers]);
+    fetchExcelFile();
+  }, []);
 
   const fetchExcelFile = async () => {
     try {
       console.log("Fetching Excel file...");
-      const response = await fetch('/sample_passenger_data1.xlsx'); // Ensure correct path to the file
-      if (!response.ok) throw new Error(`Failed to fetch Excel file: ${response.statusText}`);
+
+      const response = await fetch('/sample_passenger_data1.xlsx'); // Update path if necessary
+      if (!response.ok) {
+        throw new Error(`Failed to fetch Excel file: ${response.statusText}`);
+      }
 
       const data = await response.arrayBuffer();
       const workbook = XLSX.read(data, { type: 'array' });
@@ -52,28 +52,25 @@ const App = () => {
   };
 
   const handleFlightSelection = (flight) => {
+    setSelectedFlight(flight);
     console.log('Selected flight:', flight);
 
-    const normalizedFlight = normalizeFlightNumber(flight);
-    if (!normalizedFlight) return; // Exit early if invalid flight number
-
-    setSelectedFlight(normalizedFlight);
-    console.log(`Selected flight normalized: ${normalizedFlight}`);
-
     if (passengers.length > 0) {
-      filterPassengers(normalizedFlight);
+      filterPassengers(flight);
     } else {
       console.log("Data is still loading, cannot filter passengers yet.");
     }
   };
 
-  // Normalize flight number (remove spaces and make uppercase)
   const normalizeFlightNumber = (flightNumber) => {
-    const normalized = flightNumber?.trim().replace(/\s+/g, '').toUpperCase();
-    console.log(`Normalized flight number: '${normalized}'`);
-    return normalized;
+    if (flightNumber && flightNumber.trim) {
+      const normalized = flightNumber.trim().replace(/\s+/g, '').toUpperCase();
+      console.log(`Normalized flight number: '${normalized}'`);
+      return normalized;
+    }
+    return '';
   };
-
+  
   const filterPassengers = (flight) => {
     console.log("Filtering passengers...");
 
@@ -121,14 +118,15 @@ const App = () => {
           <button className="back-button" onClick={() => setSelectedAirline(null)}>
             Back to Airlines
           </button>
-
+  
           <FlightSelection
             flights={flights[selectedAirline]}
             onSelectFlight={handleFlightSelection}
             selectedFlight={selectedFlight}
           />
+          
           {selectedFlight && (
-            <div className="passenger-list-container" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+            <div className="passenger-list-container">
               {filteredPassengers.length > 0 ? (
                 <PassengerList passengers={filteredPassengers} />
               ) : (
